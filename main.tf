@@ -7,7 +7,6 @@ resource "null_resource" "triggers" {
   connection {
     type        = "ssh"
     user        = "ubuntu"
-    private_key = file("~/.ssh/ansible.pem")
     host        = aws_instance.testinstance.public_ip
   }
   provisioner "remote-exec" {
