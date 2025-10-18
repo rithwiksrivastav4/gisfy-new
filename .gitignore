@@ -18,3 +18,4 @@ override.tf.json            # JSON Terraform override files
 .DS_Store                   # macOS specific file
 Thumbs.db                   # Windows specific file
 *.swp                       # Vim swap files
+*.sh

@@ -1,20 +1,3 @@
-
-resource "null_resource" "triggers" {
-  triggers = {
-    build_id = var.build_id
-  }
-
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    host        = aws_instance.testinstance.public_ip
-  }
-  provisioner "remote-exec" {
-    script = "./install.sh"
-
-  }
-
-}
 resource "aws_default_vpc" "default" {
 
 }
@@ -124,7 +107,7 @@ resource "aws_instance" "testinstance" {
     Name = "Automate"
   }
   root_block_device {
-    volume_size = 30
+    volume_size = 8
     volume_type = "gp3"
   }
 }

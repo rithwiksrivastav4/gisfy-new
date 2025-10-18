@@ -13,9 +13,6 @@ variable "instance_type" {
   default     = "t2.large"
 }
 
-variable "build_id" {
-  type    = string
-  default = "1"
-}
+
 
 
