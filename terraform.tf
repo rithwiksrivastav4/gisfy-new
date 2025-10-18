@@ -4,10 +4,6 @@ terraform {
       source  = "hashicorp/aws"
       version = "6.17.0"
     }
-       null = {
-      source  = "hashicorp/null" # or your chosen namespace
-      version = "~> 3.1"         # Replace with a suitable version constraint
-    }
   }
 }
 
