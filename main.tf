@@ -6,7 +6,7 @@ resource "aws_security_group" "mysecurity" {
   name        = "allow TLS"
   description = "Allow user to connect"
   vpc_id      = aws_default_vpc.default.id
-  ingress {
+ingress {
     description = "port 22 allow"
     from_port   = 22
     to_port     = 22
@@ -38,6 +38,61 @@ resource "aws_security_group" "mysecurity" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "port 6379 allow"
+    from_port   = 6379
+    to_port     = 6379
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 465 allow"
+    from_port   = 465
+    to_port     = 465
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 3000 to 1000 allow"
+    from_port   = 3000
+    to_port     = 10000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 25 allow"
+    from_port   = 25
+    to_port     = 25
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 6443 allow"
+    from_port   = 6443
+    to_port     = 6443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "port 443 allow"
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    description = "port 8080 allow"
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
 
   tags = {
     Name = "mysecurity"
@@ -52,4 +107,23 @@ resource "aws_instance" "testinstance" {
   tags = {
     Name = "forgisfy"
   }
+}
+
+
+resource "null_resource" "triggers" {
+  triggers = {
+    build_id = var.build_id
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/ansible.pem")
+    host        = aws_instance.testinstance.public_ip
+  }
+  provisioner "remote-exec" {
+    script = "./install.sh"
+
+  }
+
 }
