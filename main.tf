@@ -96,7 +96,7 @@ resource "aws_security_group" "mysecurity" {
   tags = {
     Name = "mysecurity"
   }
-}
+} 
 
 resource "aws_instance" "testinstance" {
   ami             = var.ami_id
