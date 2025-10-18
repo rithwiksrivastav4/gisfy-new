@@ -1,12 +1,30 @@
+
+resource "null_resource" "triggers" {
+  triggers = {
+    build_id = var.build_id
+  }
+
+  connection {
+    type        = "ssh"
+    user        = "ubuntu"
+    private_key = file("~/.ssh/ansible.pem")
+    host        = aws_instance.testinstance.public_ip
+  }
+  provisioner "remote-exec" {
+    script = "./install.sh"
+
+  }
+
+}
 resource "aws_default_vpc" "default" {
 
 }
 
-resource "aws_security_group" "mysecurity" {
+resource "aws_security_group" "allow_user_to_connect" {
   name        = "allow TLS"
   description = "Allow user to connect"
   vpc_id      = aws_default_vpc.default.id
-ingress {
+  ingress {
     description = "port 22 allow"
     from_port   = 22
     to_port     = 22
@@ -93,7 +111,6 @@ ingress {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-
   tags = {
     Name = "mysecurity"
   }
@@ -103,27 +120,12 @@ resource "aws_instance" "testinstance" {
   ami             = var.ami_id
   instance_type   = var.instance_type
   key_name        = "ansible"
-  security_groups = [aws_security_group.mysecurity.name]
+  security_groups = [aws_security_group.allow_user_to_connect.name]
   tags = {
-    Name = "forgisfy"
+    Name = "Automate"
   }
-}
-
-
-resource "null_resource" "triggers" {
-  triggers = {
-    build_id = var.build_id
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
   }
-
-  connection {
-    type        = "ssh"
-    user        = "ubuntu"
-    private_key = file("C:/Users/rithwik/.ssh/ansible.pem")
-    host        = aws_instance.testinstance.public_ip
-  }
-  provisioner "remote-exec" {
-    script = "./install.sh"
-
-  }
-
 }
